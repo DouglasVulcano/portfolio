@@ -1,0 +1,23 @@
+services:
+  app:
+    build:
+      context: .
+      target: base # Uses the base stage from the Dockerfile for development
+    volumes:
+      - .:/app # Mounts the current directory to the container
+      - /app/node_modules # Prevents conflict of node_modules between host and container
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: npm run dev # Command to start in development mode
+
+  app-production:
+    build:
+      context: .
+      target: production # Uses the production stage from the Dockerfile
+    ports:
+      - "3001:3000" # Port 3001 on the host to avoid conflict with development
+    environment:
+      - NODE_ENV=production
+    command: npm start # Command to start in production mode
